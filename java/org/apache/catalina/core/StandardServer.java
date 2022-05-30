@@ -987,6 +987,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
     /**
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
+     * 调用启动前初始化。 这用于允许连接器绑定到 Unix 操作环境下的受限端口。
      */
     @Override
     protected void initInternal() throws LifecycleException {
@@ -1001,9 +1002,11 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         // Note although the cache is global, if there are multiple Servers
         // present in the JVM (may happen when embedding) then the same cache
         // will be registered under multiple names
+        // 注册全局字符串缓存注意虽然缓存是全局的，但如果JVM中存在多个服务器（嵌入时可能会发生），那么相同的缓存将以多个名称注册
         onameStringCache = register(new StringCache(), "type=StringCache");
 
         // Register the MBeanFactory
+        // 注册并初始化 naming resources
         MBeanFactory factory = new MBeanFactory();
         factory.setContainer(this);
         onameMBeanFactory = register(factory, "type=MBeanFactory");
@@ -1013,10 +1016,12 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
 
         // Populate the extension validator with JARs from common and shared
         // class loaders
+        // 使用来自公共和共享类加载器的 JAR 填充扩展验证器
         if (getCatalina() != null) {
             ClassLoader cl = getCatalina().getParentClassLoader();
             // Walk the class loader hierarchy. Stop at the system class loader.
             // This will add the shared (if present) and common class loaders
+            // 遍历类加载器层次结构。 在系统类加载器处停止。 这将添加共享（如果存在）和公共类加载器
             while (cl != null && cl != ClassLoader.getSystemClassLoader()) {
                 if (cl instanceof URLClassLoader) {
                     URL[] urls = ((URLClassLoader) cl).getURLs();
@@ -1038,6 +1043,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
             }
         }
         // Initialize our defined Services
+        // 初始化我们定义的 Services
         for (Service service : services) {
             service.init();
         }

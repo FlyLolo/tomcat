@@ -42,6 +42,10 @@ import org.apache.juli.logging.LogFactory;
  * other classes they depend on, such as an XML parser) out of the system
  * class path and therefore not visible to application level classes.
  *
+ *  Catalina 的引导加载程序。
+ *  该应用程序构建了一个类加载器，用于加载 Catalina 内部类（通过累积在“catalina.home”下的“server”目录中找到的所有 JAR 文件），并启动容器的常规执行。
+ *  这种迂回方法的目的是将 Catalina 内部类（以及它们所依赖的任何其他类，例如 XML 解析器）保留在系统类路径之外，因此对应用程序级类不可见。
+ *
  * @author Craig R. McClanahan
  * @author Remy Maucherat
  */
@@ -51,6 +55,7 @@ public final class Bootstrap {
 
     /**
      * Daemon object used by main.
+     * main方法使用的守护进程对象.
      */
     private static final Object daemonLock = new Object();
     private static volatile Bootstrap daemon = null;
