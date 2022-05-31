@@ -69,7 +69,10 @@ public final class SSLContext {
      * Set Session context id. Usually host:port combination.
      * @param ctx Context to use.
      * @param id  String that uniquely identifies this context.
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static native void setContextId(long ctx, String id);
 
     /**
@@ -90,7 +93,10 @@ public final class SSLContext {
      * @param ctx Server or Client context to use.
      * @param bio BIO handle to use, created with SSL.newBIO
      * @param dir BIO direction (1 for input 0 for output).
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static native void setBIO(long ctx, long bio, int dir);
 
     /**
@@ -139,7 +145,10 @@ public final class SSLContext {
      * The default is normal shutdown behaviour as described by the TLS standard.
      * @param ctx Server or Client context to use.
      * @param mode True to set the quiet shutdown.
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static native void setQuietShutdown(long ctx, boolean mode);
 
     /**
@@ -343,7 +352,10 @@ public final class SSLContext {
      * Set file for randomness
      * @param ctx Server or Client context to use.
      * @param file random file.
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static native void setRandom(long ctx, String file);
 
     /**
@@ -357,7 +369,10 @@ public final class SSLContext {
      * </PRE>
      * @param ctx Server or Client context to use.
      * @param type Shutdown type to use.
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static native void setShutdownType(long ctx, int type);
 
     /**
@@ -395,6 +410,7 @@ public final class SSLContext {
      */
     public static native void setVerify(long ctx, int level, int depth);
 
+    @Deprecated
     public static native int setALPN(long ctx, byte[] proto, int len);
 
     /**
@@ -444,7 +460,10 @@ public final class SSLContext {
      *                    via connections initiated using
      *                    <code>defaultSSLContext</code> to the correct  OpenSSL
      *                    SSLContext
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static void registerDefault(Long defaultSSLContext,
             SNICallBack sniCallBack) {
         sniCallBacks.put(defaultSSLContext, sniCallBack);
@@ -456,7 +475,10 @@ public final class SSLContext {
      *
      * @param defaultSSLContext The Java representation of a pointer to the
      *                          OpenSSL SSLContext that will no longer be used
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static void unregisterDefault(Long defaultSSLContext) {
         sniCallBacks.remove(defaultSSLContext);
     }
@@ -493,27 +515,6 @@ public final class SSLContext {
     public static native void setCertVerifyCallback(long ctx, CertificateVerifier verifier);
 
     /**
-     * Set next protocol for next protocol negotiation extension
-     * @param ctx Server context to use.
-     * @param nextProtos comma delimited list of protocols in priority order
-     *
-     * @deprecated use {@link #setNpnProtos(long, String[], int)}
-     */
-    @Deprecated
-    public static void setNextProtos(long ctx, String nextProtos) {
-        setNpnProtos(ctx, nextProtos.split(","), SSL.SSL_SELECTOR_FAILURE_CHOOSE_MY_LAST_PROTOCOL);
-    }
-
-    /**
-     * Set next protocol for next protocol negotiation extension
-     * @param ctx Server context to use.
-     * @param nextProtos protocols in priority order
-     * @param selectorFailureBehavior see {@link SSL#SSL_SELECTOR_FAILURE_NO_ADVERTISE}
-     *                                and {@link SSL#SSL_SELECTOR_FAILURE_CHOOSE_MY_LAST_PROTOCOL}
-     */
-    public static native void setNpnProtos(long ctx, String[] nextProtos, int selectorFailureBehavior);
-
-    /**
      * Set application layer protocol for application layer protocol negotiation extension
      * @param ctx Server context to use.
      * @param alpnProtos protocols in priority order
@@ -528,7 +529,10 @@ public final class SSLContext {
      * @param cert DH param file (can be generated from e.g. {@code openssl dhparam -rand - 2048 > dhparam.pem} -
      *             see the <a href="https://www.openssl.org/docs/apps/dhparam.html">OpenSSL documentation</a>).
      * @throws Exception An error occurred
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static native void setTmpDH(long ctx, String cert)
             throws Exception;
 
@@ -538,7 +542,10 @@ public final class SSLContext {
      * @param curveName the name of the elliptic curve to use
      *             (available names can be obtained from {@code openssl ecparam -list_curves}).
      * @throws Exception An error occurred
+     *
+     * @deprecated Unused. Will be removed in Tomcat 10.1
      */
+    @Deprecated
     public static native void setTmpECDHByCurveName(long ctx, String curveName)
             throws Exception;
 
