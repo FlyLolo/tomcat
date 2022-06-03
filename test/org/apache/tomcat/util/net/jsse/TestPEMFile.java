@@ -18,7 +18,6 @@ package org.apache.tomcat.util.net.jsse;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.security.PrivateKey;
 
 import org.junit.Assert;
@@ -38,6 +37,12 @@ public class TestPEMFile {
     @Test
     public void testKeyPkcs1() throws Exception {
         testKey(KEY_PKCS1, null);
+    }
+
+
+    @Test
+    public void testKeyPkcs1WithUnnecessaryPassword() throws Exception {
+        testKey(KEY_PKCS1, "ignore-me");
     }
 
 
@@ -77,7 +82,7 @@ public class TestPEMFile {
     }
 
 
-    private String getPath(String file) throws URISyntaxException, IOException {
+    private String getPath(String file) throws IOException {
         String packageName = this.getClass().getPackage().getName();
         String path = packageName.replace(".", File.separator);
         File f = new File("test" + File.separator + path + File.separator + file);
