@@ -39,6 +39,17 @@ import org.apache.catalina.startup.Catalina;
  * the first line is read and compared with the specified shutdown command.
  * If the command matches, shutdown of the server is initiated.
  *
+ * <code>Server</code> 组件代表整个 Catalina servlet 容器。
+ * 它的属性代表了整个 servlet 容器的特征。
+ * <code>Server</code> 可能包含一个或多个<code>Services</code>，以及顶级命名资源集合。
+ * <p>
+ * 通常，这个<code>Server</code>接口的一个实现也会实现<code>Lifecycle</code>，
+ * 这样当<code>start()</code>和<code>stop()</code>方法被调用时，
+ * 所有的 定义的 <code>Services</code> 也会启动或停止。
+ * <p>
+ * 在这两者之间，实现必须在 <code>port</code> 属性指定的端口号上打开一个server socket。
+ * 当一个连接被接受时，第一行被读取并与指定的关闭命令进行比较。 如果命令匹配，则启动服务器关闭。
+ *
  * @author Craig R. McClanahan
  */
 public interface Server extends Lifecycle {
@@ -47,6 +58,7 @@ public interface Server extends Lifecycle {
 
     /**
      * @return the global naming resources.
+     * 返回公用的naming resources
      */
     public NamingResourcesImpl getGlobalNamingResources();
 
@@ -68,6 +80,7 @@ public interface Server extends Lifecycle {
 
     /**
      * @return the port number we listen to for shutdown commands.
+     * 返回用于监听关闭命令的端口
      *
      * @see #getPortOffset()
      * @see #getPortWithOffset()
@@ -89,6 +102,10 @@ public interface Server extends Lifecycle {
      * For example, if port is 8005, and portOffset is 1000,
      * the server listens at 9005.
      *
+     * 获取对于关闭命令的端口的偏移值。
+     * 例如，如果port值是 8005，portOffset 是 1000，
+     * 服务器在 9005 侦听。
+     *
      * @return the port offset
      */
     public int getPortOffset();
@@ -107,12 +124,17 @@ public interface Server extends Lifecycle {
      * If you do not set port offset, port is returned. If you set
      * port offset, port offset + port is returned.
      *
+     * 获取服务器正在侦听关闭命令的实际端口。
+     * 如果不设置端口偏移量，则返回端口。
+     * 如果设置端口偏移，则返回端口偏移 + 端口。
+     *
      * @return the port with offset
      */
     public int getPortWithOffset();
 
     /**
      * @return the address on which we listen to for shutdown commands.
+     * 返回监听关闭命令的地址
      */
     public String getAddress();
 
@@ -133,6 +155,7 @@ public interface Server extends Lifecycle {
 
     /**
      * Set the shutdown command we are waiting for.
+     * 返回正在等待的关闭命令字符串。
      *
      * @param shutdown The new shutdown command
      */
