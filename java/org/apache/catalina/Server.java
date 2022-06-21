@@ -166,6 +166,8 @@ public interface Server extends Lifecycle {
      * @return the parent class loader for this component. If not set, return
      * {@link #getCatalina()} {@link Catalina#getParentClassLoader()}. If
      * catalina has not been set, return the system class loader.
+     *
+     * 返回该组件的父类加载器。 如果没有设置，返回Catalina.getParentClassLoader()。 如果没有设置 catalina，则返回系统类加载器。
      */
     public ClassLoader getParentClassLoader();
 
@@ -180,6 +182,7 @@ public interface Server extends Lifecycle {
 
     /**
      * @return the outer Catalina startup/shutdown component if present.
+     * 返回外部 Catalina 启动/关闭组件（如果存在）。
      */
     public Catalina getCatalina();
 
@@ -195,6 +198,8 @@ public interface Server extends Lifecycle {
      * @return the configured base (instance) directory. Note that home and base
      * may be the same (and are by default). If this is not set the value
      * returned by {@link #getCatalinaHome()} will be used.
+     *
+     * 返回配置的基本（实例）目录。 请注意，home 和 base 可能相同（默认情况下）。 如果未设置，将使用getCatalinaHome() 返回的值。
      */
     public File getCatalinaBase();
 
@@ -210,6 +215,7 @@ public interface Server extends Lifecycle {
     /**
      * @return the configured home (binary) directory. Note that home and base
      * may be the same (and are by default).
+     * 返回配置的主（二进制）目录。 请注意，home 和 base 可能相同（默认情况下）。
      */
     public File getCatalinaHome();
 
@@ -224,6 +230,7 @@ public interface Server extends Lifecycle {
 
     /**
      * Get the utility thread count.
+     * 获取实用程序线程数。
      * @return the thread count
      */
     public int getUtilityThreads();
@@ -241,6 +248,7 @@ public interface Server extends Lifecycle {
 
     /**
      * Add a new Service to the set of defined Services.
+     * 将Service添加到已定义的服务集中。
      *
      * @param service The Service to be added
      */
@@ -249,12 +257,14 @@ public interface Server extends Lifecycle {
 
     /**
      * Wait until a proper shutdown command is received, then return.
+     * 等到收到正确的关机命令，然后返回。
      */
     public void await();
 
 
     /**
      * Find the specified Service
+     * 寻找指定名称的Service
      *
      * @param name Name of the Service to be returned
      * @return the specified Service, or <code>null</code> if none exists.
@@ -264,6 +274,7 @@ public interface Server extends Lifecycle {
 
     /**
      * @return the set of Services defined within this Server.
+     * 返回此服务器中定义的服务集。
      */
     public Service[] findServices();
 
@@ -271,6 +282,7 @@ public interface Server extends Lifecycle {
     /**
      * Remove the specified Service from the set associated from this
      * Server.
+     * 从与此服务器关联的集中删除指定的服务。
      *
      * @param service The Service to be removed
      */
@@ -280,11 +292,13 @@ public interface Server extends Lifecycle {
     /**
      * @return the token necessary for operations on the associated JNDI naming
      * context.
+     * 返回对关联的 JNDI 命名上下文进行操作所需的令牌。
      */
     public Object getNamingToken();
 
     /**
      * @return the utility executor managed by the Service.
+     * 返回由服务管理的实用程序执行器。
      */
     public ScheduledExecutorService getUtilityExecutor();
 
