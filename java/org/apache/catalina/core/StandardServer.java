@@ -550,6 +550,9 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      * Wait until a proper shutdown command is received, then return.
      * This keeps the main thread alive - the thread pool listening for http
      * connections is daemon threads.
+     *
+     * 等到收到正确的关机命令，然后返回。
+     * 这使主线程保持活动状态 - 侦听 http 连接的线程池是守护线程。
      */
     @Override
     public void await() {
@@ -575,6 +578,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         }
 
         // Set up a server socket to wait on
+        // 设置服务器套接字以等待
         try {
             awaitSocket = new ServerSocket(getPortWithOffset(), 1,
                     InetAddress.getByName(address));
@@ -589,6 +593,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
             awaitThread = Thread.currentThread();
 
             // Loop waiting for a connection and a valid command
+            // 循环等待连接和有效命令
             while (!stopAwait) {
                 ServerSocket serverSocket = awaitSocket;
                 if (serverSocket == null) {
@@ -596,6 +601,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
                 }
 
                 // Wait for the next connection
+                // 等待下一次连接
                 Socket socket = null;
                 StringBuilder command = new StringBuilder();
                 try {
@@ -608,6 +614,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
                     } catch (SocketTimeoutException ste) {
                         // This should never happen but bug 56684 suggests that
                         // it does.
+                        // 这不应该发生，但错误 56684 表明它确实发生了。
                         log.warn(sm.getString("standardServer.accept.timeout",
                                 Long.valueOf(System.currentTimeMillis() - acceptStartTime)), ste);
                         continue;
@@ -624,7 +631,8 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
                     }
 
                     // Read a set of characters from the socket
-                    int expected = 1024; // Cut off to avoid DoS attack
+                    // 从套接字中读取一组字符
+                    int expected = 1024; // Cut off to avoid DoS attack  // 切断以避免 DoS 攻击
                     while (expected < shutdown.length()) {
                         if (random == null) {
                             random = new Random();
@@ -648,6 +656,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
                     }
                 } finally {
                     // Close the socket now that we are done with it
+                    // 完成后关闭套接字
                     try {
                         if (socket != null) {
                             socket.close();
@@ -658,6 +667,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
                 }
 
                 // Match against our command string
+                // 匹配我们的命令字符串
                 boolean match = command.toString().equals(shutdown);
                 if (match) {
                     log.info(sm.getString("standardServer.shutdownViaPort"));
@@ -960,6 +970,10 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      *
      * @exception LifecycleException if this component detects a fatal error
      *  that needs to be reported
+     *
+     * 停止嵌套组件（{@link Service}）并实现 {@link org.apache.catalina.util.LifecycleBase#stopInternal()} 的要求。
+     *
+     * @exception LifecycleException 如果此组件检测到需要报告的致命错误
      */
     @Override
     protected void stopInternal() throws LifecycleException {
@@ -1009,12 +1023,13 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
         onameStringCache = register(new StringCache(), "type=StringCache");
 
         // Register the MBeanFactory
-        // 注册并初始化 naming resources
+        // 注册 MBeanFactory
         MBeanFactory factory = new MBeanFactory();
         factory.setContainer(this);
         onameMBeanFactory = register(factory, "type=MBeanFactory");
 
         // Register the naming resources
+        // 注册并初始化 naming resources
         globalNamingResources.init();
 
         // Populate the extension validator with JARs from common and shared
@@ -1112,6 +1127,13 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
      * <li>Name of first {@link org.apache.catalina.Engine}.</li>
      * <li>Name of first {@link Service}.</li>
      * </ol>
+     *
+     * 获取此服务器的 MBean 域。 使用以下搜索顺序获取域：
+     * <ol>
+     * <li>第一个 {@link org.apache.catalina.Engine} 的名称。</li>
+     * <li>第一个 {@link Service} 的名称。</li>
+     * </ol>
+     *
      */
     @Override
     protected String getDomainInternal() {
