@@ -45,6 +45,8 @@ import org.apache.tomcat.util.res.StringManager;
  * associated Container is generally an instance of Engine, but this is
  * not required.
  *
+ * 是<code>Service</code> 接口的标准实现。 关联的 Container 通常是 Engine 的一个实例，但这不是必需的。
+ *
  * @author Craig R. McClanahan
  */
 
@@ -64,23 +66,28 @@ public class StandardService extends LifecycleMBeanBase implements Service {
 
     /**
      * The <code>Server</code> that owns this Service, if any.
+     * 这个Service对应的上级Server，如果有。
      */
     private Server server = null;
 
     /**
      * The property change support for this component.
+     *
+     * 此组件的属性更改支持。
      */
     protected final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
 
     /**
      * The set of Connectors associated with this Service.
+     * 当前Service中注册的Connectors集合。
      */
     protected Connector connectors[] = new Connector[0];
     private final Object connectorsLock = new Object();
 
     /**
      * The list of executors held by the service.
+     * 当前Service中注册的Executor集合。
      */
     protected final ArrayList<Executor> executors = new ArrayList<>();
 
@@ -192,6 +199,8 @@ public class StandardService extends LifecycleMBeanBase implements Service {
 
     /**
      * Return the <code>Server</code> with which we are associated (if any).
+     *
+     * 返回这个Service对应的上级Server，如果有的情况下。
      */
     @Override
     public Server getServer() {
@@ -215,6 +224,8 @@ public class StandardService extends LifecycleMBeanBase implements Service {
     /**
      * Add a new Connector to the set of defined Connectors, and associate it
      * with this Service's Container.
+     *
+     * 将新的Connector添加到已定义的Connector集中，并将其与此Service的Container相关联。
      *
      * @param connector The Connector to be added
      */
@@ -276,6 +287,8 @@ public class StandardService extends LifecycleMBeanBase implements Service {
      * Service.  The removed Connector will also be disassociated from our
      * Container.
      *
+     * 从与此服务关联的集合中删除指定的连接器。 移除的连接器也将与我们的容器解除关联。
+     *
      * @param connector The Connector to be removed
      */
     @Override
@@ -329,6 +342,8 @@ public class StandardService extends LifecycleMBeanBase implements Service {
 
     /**
      * Return a String representation of this component.
+     *
+     * 重写了toString方法，返回“StandardService[service的名称]”。
      */
     @Override
     public String toString() {
@@ -341,6 +356,9 @@ public class StandardService extends LifecycleMBeanBase implements Service {
 
     /**
      * Adds a named executor to the service
+     *
+     * 添加一个已命名的Executor到Service中
+     *
      * @param ex Executor
      */
     @Override
@@ -362,6 +380,9 @@ public class StandardService extends LifecycleMBeanBase implements Service {
 
     /**
      * Retrieves all executors
+     *
+     * 返回所有Executor的数组，原集合是ArrayList 需做转换
+     *
      * @return Executor[]
      */
     @Override
@@ -376,6 +397,9 @@ public class StandardService extends LifecycleMBeanBase implements Service {
 
     /**
      * Retrieves executor by name, null if not found
+     *
+     * 查找指定名称的Executor，如果未找到则返回null
+     *
      * @param executorName String
      * @return Executor
      */
@@ -417,6 +441,11 @@ public class StandardService extends LifecycleMBeanBase implements Service {
      *
      * @exception LifecycleException if this component detects a fatal error
      *  that prevents this component from being used
+     *
+     *  启动嵌套组件（{@link Executor}、{@link Connector} 和 {@link Container}）
+     *  并实现 {@link org.apache.catalina.util.LifecycleBase#startInternal()} 的要求。
+     *
+     *  如果此组件检测到阻止此组件被使用的致命错误，将抛出LifecycleException异常
      */
     @Override
     protected void startInternal() throws LifecycleException {
@@ -529,6 +558,8 @@ public class StandardService extends LifecycleMBeanBase implements Service {
     /**
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
+     *
+     * 调用启动前初始化。 这用于允许连接器绑定到 Unix 操作环境下的受限端口。
      */
     @Override
     protected void initInternal() throws LifecycleException {
