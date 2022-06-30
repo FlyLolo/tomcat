@@ -18,6 +18,9 @@
 <!-- Note:  A "Server" is not itself a "Container", so you may not
      define subcomponents such as "Valves" at this level.
      Documentation at /docs/config/server.html
+     注意：“服务器”本身并不是“容器”，因此您可能不会
+      在此级别定义子组件，例如“阀门”。
+      /docs/config/server.html 中的文档
  -->
 <Server port="8005" shutdown="SHUTDOWN">
   <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
@@ -33,10 +36,13 @@
 
   <!-- Global JNDI resources
        Documentation at /docs/jndi-resources-howto.html
+       公共 JNDI 资源
   -->
   <GlobalNamingResources>
     <!-- Editable user database that can also be used by
          UserDatabaseRealm to authenticate users
+
+         UserDatabaseRealm 也可以使用可编辑的用户数据库对用户进行身份验证
     -->
     <Resource name="UserDatabase" auth="Container"
               type="org.apache.catalina.UserDatabase"
@@ -49,10 +55,14 @@
        a single "Container" Note:  A "Service" is not itself a "Container",
        so you may not define subcomponents such as "Valves" at this level.
        Documentation at /docs/config/service.html
+
+       “服务”是一个或多个“连接器”的集合，它们共享一个“容器”
+       注意：“服务”本身不是“容器”，因此您不能在此级别定义子组件，例如“阀门”。
    -->
   <Service name="Catalina">
 
-    <!--The connectors can use a shared executor, you can define one or more named thread pools-->
+    <!--The connectors can use a shared executor, you can define one or more named thread pools -->
+    <!-- 连接器可以使用共享执行器，您可以定义一个或多个命名线程池 -->
     <!--
     <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
         maxThreads="150" minSpareThreads="4"/>
@@ -64,11 +74,18 @@
          HTTP Connector: /docs/config/http.html
          AJP  Connector: /docs/config/ajp.html
          Define a non-SSL/TLS HTTP/1.1 Connector on port 8080
+
+         “连接器”表示接收请求并返回响应的端点。
+         文档位于：
+         HTTP 连接器：/docs/config/http.html
+         AJP 连接器：/docs/config/ajp.html
+         在端口 8080 上定义非 SSL/TLS HTTP/1.1 连接器
     -->
     <Connector port="8080" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443" />
     <!-- A "Connector" using the shared thread pool-->
+    <!-- 使用共享线程池的“连接器”-->
     <!--
     <Connector executor="tomcatThreadPool"
                port="8080" protocol="HTTP/1.1"
@@ -81,6 +98,11 @@
          library and the useOpenSSL attribute of the AprLifecycleListener.
          Either JSSE or OpenSSL style configuration may be used regardless of
          the SSLImplementation selected. JSSE style configuration is used below.
+
+         使用 HTTP/2 在端口 8443 上定义 SSL/TLS HTTP/1.1 连接器
+         此连接器使用 NIO 实现。
+         默认 SSLImplementation 将取决于 APR/native 库的存在以及 AprLifecycleListener 的 useOpenSSL 属性。
+         无论选择什么 SSLImplementation，都可以使用 JSSE 或 OpenSSL 样式配置。 下面使用 JSSE 样式配置。
     -->
     <!--
     <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
@@ -94,6 +116,7 @@
     -->
 
     <!-- Define an AJP 1.3 Connector on port 8009 -->
+    <!-- 在端口 8009 上定义 AJP 1.3 连接器 -->
     <!--
     <Connector protocol="AJP/1.3"
                address="::1"
@@ -105,14 +128,22 @@
          every request.  The Engine implementation for Tomcat stand alone
          analyzes the HTTP headers included with the request, and passes them
          on to the appropriate Host (virtual host).
-         Documentation at /docs/config/engine.html -->
+
+         引擎代表处理每个请求的入口点（在 Catalina 内）。
+         Tomcat 的引擎实现独立分析请求中包含的 HTTP 标头，
+         并将它们传递给适当的主机（虚拟主机）。
+
+         Documentation at /docs/config/engine.html
+         -->
 
     <!-- You should set jvmRoute to support load-balancing via AJP ie :
+         您应该设置 jvmRoute 以通过 AJP 支持负载平衡，即：
     <Engine name="Catalina" defaultHost="localhost" jvmRoute="jvm1">
     -->
     <Engine name="Catalina" defaultHost="localhost">
 
       <!--For clustering, please take a look at documentation at:
+          对于集群，请查看以下文档：
           /docs/cluster-howto.html  (simple how to)
           /docs/config/cluster.html (reference documentation) -->
       <!--
@@ -120,12 +151,19 @@
       -->
 
       <!-- Use the LockOutRealm to prevent attempts to guess user passwords
-           via a brute-force attack -->
+           via a brute-force attack
+
+           使用 LockOutRealm 防止尝试通过暴力攻击猜测用户密码
+           -->
       <Realm className="org.apache.catalina.realm.LockOutRealm">
         <!-- This Realm uses the UserDatabase configured in the global JNDI
              resources under the key "UserDatabase".  Any edits
              that are performed against this UserDatabase are immediately
-             available for use by the Realm.  -->
+             available for use by the Realm.
+
+             该领域使用在“UserDatabase”键下的全局 JNDI 资源中配置的 UserDatabase。
+             对此 UserDatabase 执行的任何编辑都可以立即供 Realm 使用。
+             -->
         <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
                resourceName="UserDatabase"/>
       </Realm>
@@ -134,6 +172,7 @@
             unpackWARs="true" autoDeploy="true">
 
         <!-- SingleSignOn valve, share authentication between web applications
+             SingleSignOn Valve，在 Web 应用程序之间共享身份验证
              Documentation at: /docs/config/valve.html -->
         <!--
         <Valve className="org.apache.catalina.authenticator.SingleSignOn" />
@@ -141,7 +180,12 @@
 
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html
-             Note: The pattern used is equivalent to using pattern="common" -->
+             Note: The pattern used is equivalent to using pattern="common"
+
+             访问日志处理所有示例。
+             文档位于：/docs/config/valve.html
+             注意：使用的模式等价于使用pattern="common"
+             -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="localhost_access_log" suffix=".txt"
                pattern="%h %l %u %t &quot;%r&quot; %s %b" />
