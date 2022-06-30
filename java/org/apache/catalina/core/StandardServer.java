@@ -66,6 +66,9 @@ import org.apache.tomcat.util.threads.TaskThreadFactory;
  * Standard implementation of the <b>Server</b> interface, available for use
  * (but not required) when deploying and starting Catalina.
  *
+ * 是<b>Server</b> 接口的标准实现，可在部署和启动 Catalina 时使用（但不是必需的）。
+ * 它同时也继承LifecycleMBeanBase进而实现了Lifecycle接口。
+ *
  * @author Craig R. McClanahan
  */
 public final class StandardServer extends LifecycleMBeanBase implements Server {
@@ -78,6 +81,7 @@ public final class StandardServer extends LifecycleMBeanBase implements Server {
 
     /**
      * Construct a default instance of this class.
+     * 默认构造方法
      */
     public StandardServer() {
 

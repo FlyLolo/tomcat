@@ -43,9 +43,9 @@ import org.apache.catalina.startup.Catalina;
  * 它的属性代表了整个 servlet 容器的特征。
  * <code>Server</code> 可能包含一个或多个<code>Services</code>，以及顶级命名资源集合。
  * <p>
- * 通常，这个<code>Server</code>接口的一个实现也会实现<code>Lifecycle</code>，
+ * 通常，这个<code>Server</code>接口的实现也会实现<code>Lifecycle</code>接口，
  * 这样当<code>start()</code>和<code>stop()</code>方法被调用时，
- * 所有的 定义的 <code>Services</code> 也会启动或停止。
+ * 所有定义的 <code>Services</code> 也会启动或停止。
  * <p>
  * 在这两者之间，实现必须在 <code>port</code> 属性指定的端口号上打开一个server socket。
  * 当一个连接被接受时，第一行被读取并与指定的关闭命令进行比较。 如果命令匹配，则启动服务器关闭。
